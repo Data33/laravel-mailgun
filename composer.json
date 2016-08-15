@@ -1,0 +1,26 @@
+{
+    "name": "data33/laravel-mailgun",
+    "description": "Send emails from multiple domains with mailgun",
+    "type": "library",
+	"keywords": ["mailgun", "laravel"],
+	"homepage": "https://github.com/Data33/laravel-mailgun",
+    "require": {
+        "anlutro/curl": "^1.4.2",
+        "illuminate/contracts": "^5.2.43",
+		"illuminate/support": "^5.2.43"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mattias Ottosson",
+            "email": "datae33@gmail.com",
+			"homepage": "https://github.com/Data33"
+        }
+    ],
+    "minimum-stability": "dev",
+	"autoload": {
+		"psr-4": {
+			"Data33\\LaravelMailgun\\": "src/"
+		}
+	}
+}
