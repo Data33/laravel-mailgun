@@ -55,7 +55,7 @@ class Message {
 	 * @param mixed $variables Either supply a string as a name for the recipient or an array with recipient variables
 	 * @return Message
 	 */
-	public function addToRecipient($email, $variables) {
+	public function addToRecipient($email, $variables = '') {
 		$this->setRecipientVariables($email, $variables);
 		$this->to[] = $this->parseRecipient($email, $variables);
 
@@ -71,7 +71,7 @@ class Message {
 	 * @param mixed $variables Either supply a string as a name for the recipient or an array with recipient variables
 	 * @return Message
 	 */
-	public function addCcRecipient($email, $variables){
+	public function addCcRecipient($email, $variables = ''){
 		$this->setRecipientVariables($email, $variables);
 		$this->cc[] = $this->parseRecipient($email, $variables);
 
@@ -87,7 +87,7 @@ class Message {
 	 * @param mixed $variables Either supply a string as a name for the recipient or an array with recipient variables
 	 * @return Message
 	 */
-	public function addBccRecipient($email, $variables){
+	public function addBccRecipient($email, $variables = ''){
 		$this->setRecipientVariables($email, $variables);
 		$this->bcc[] = $this->parseRecipient($email, $variables);
 
