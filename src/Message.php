@@ -1,9 +1,7 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: Mattias
- * Date: 2016-08-14
- * Time: 11:13
+ * @author Mattias Ottosson <datae33@gmail.com>
+ * @link https://github.com/data33
  */
 
 namespace Data33\LaravelMailgun;
@@ -19,9 +17,13 @@ class Message {
 	private $subject = '';
 	private $body = ['text' => '', 'html' => ''];
 
-	public function __construct(){
-	}
-
+	/**
+	 * Sets a subject for the message
+	 *
+	 * @param string $subject The subject of the message
+	 *
+	 * @return Message
+	 */
 	public function setSubject($subject){
 		if (is_string($subject) && mb_strlen($subject) > 0)
 			$this->subject = $subject;
@@ -29,12 +31,30 @@ class Message {
 		return $this;
 	}
 
-	public function setFromAddress($email, $variables){
-		$this->from = $this->parseRecipient($email, $variables);
+	/**
+	 * Sets the from-address for the message
+	 *
+	 * @param string $email The email address to use as sender
+	 * @param string $name The name of the sender
+	 *
+	 * @return Message
+	 *
+	 */
+	public function setFromAddress($email, $name){
+		$this->from = $this->parseRecipient($email, $name);
 
 		return $this;
 	}
 
+	/**
+	 * Adds a to-recipient to the message
+	 * If an array with recipient variables is supplied name can be fetched from the array if
+	 * any of the keys "name, first or last" are used.
+	 *
+	 * @param string $email The email address of the recipient
+	 * @param mixed $variables Either supply a string as a name for the recipient or an array with recipient variables
+	 * @return Message
+	 */
 	public function addToRecipient($email, $variables) {
 		$this->setRecipientVariables($email, $variables);
 		$this->to[] = $this->parseRecipient($email, $variables);
@@ -42,6 +62,15 @@ class Message {
 		return $this;
 	}
 
+	/**
+	 * Adds a cc-recipient to the message
+	 * If an array with recipient variables is supplied name can be fetched from the array if
+	 * any of the keys "name, first or last" are used.
+	 *
+	 * @param string $email The email address of the recipient
+	 * @param mixed $variables Either supply a string as a name for the recipient or an array with recipient variables
+	 * @return Message
+	 */
 	public function addCcRecipient($email, $variables){
 		$this->setRecipientVariables($email, $variables);
 		$this->cc[] = $this->parseRecipient($email, $variables);
@@ -49,6 +78,15 @@ class Message {
 		return $this;
 	}
 
+	/**
+	 * Adds a bcc-recipient to the message
+	 * If an array with recipient variables is supplied name can be fetched from the array if
+	 * any of the keys "name, first or last" are used.
+	 *
+	 * @param string $email The email address of the recipient
+	 * @param mixed $variables Either supply a string as a name for the recipient or an array with recipient variables
+	 * @return Message
+	 */
 	public function addBccRecipient($email, $variables){
 		$this->setRecipientVariables($email, $variables);
 		$this->bcc[] = $this->parseRecipient($email, $variables);
@@ -56,6 +94,12 @@ class Message {
 		return $this;
 	}
 
+	/**
+	 * Sets the message body
+	 *
+	 * @param mixed $message Either supply a string that will be used as both html and text, or an array of strings to specify them
+	 * @return Message
+	 */
 	public function setMessage($message){
 		if (is_array($message)){
 			if (isset($message['text'])){
@@ -82,6 +126,14 @@ class Message {
 		return $this;
 	}
 
+	/**
+	 * Adds an attachment to the message
+	 *
+	 * @param string $filePath Full path to the file you want to attach
+	 * @param string $outputName The filename that recipients will see
+	 * @return Message
+	 * @throws Exception
+	 */
 	public function addAttachment($filePath, $outputName = null){
 		if (!file_exists($filePath)){
 			throw new Exception('The attached file does not exist!');
@@ -96,6 +148,13 @@ class Message {
 		return $this;
 	}
 
+
+	/**
+	 * Fetches the message data that needs to be transported
+	 * Should only be used by Transporters
+	 *
+	 * @return array
+	 */
 	public function getData(){
 		$messages = [];
 
@@ -110,6 +169,13 @@ class Message {
 		return $messages;
 	}
 
+	/**
+	 * Builds the actual postFields to be sent by the Transporter
+	 *
+	 * @param array $toRecipients
+	 * @param array $ccRecipients
+	 * @return array
+	 */
 	private function buildMessageData($toRecipients, $ccRecipients){
 		$postFields = [
 			'from' => '',
@@ -143,6 +209,14 @@ class Message {
 		return $postFields;
 	}
 
+	/**
+	 * Parses email and recipient variables into valid recipient string
+	 *
+	 *
+	 * @param string $email The email address to parse
+	 * @param mixed $variables The recipient variables to parse
+	 * @return string
+	 */
 	private function parseRecipient($email, $variables){
 		if (is_string($variables)){
 			return trim(sprintf("%s <%s>", $variables, $email));
@@ -161,6 +235,12 @@ class Message {
 		return $email;
 	}
 
+	/**
+	 * Handles the storage of recipient variables internally
+	 *
+	 * @param string $email
+	 * @param mixed $variables
+	 */
 	private function setRecipientVariables($email, $variables){
 		if (!is_array($variables))  return;
 		if (!isset($this->recipientVariables[$email])){

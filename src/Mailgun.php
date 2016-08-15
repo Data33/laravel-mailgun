@@ -1,4 +1,9 @@
 <?php
+/**
+ * @author Mattias Ottosson <datae33@gmail.com>
+ * @link https://github.com/data33
+ */
+
 namespace Data33\LaravelMailgun;
 
 
@@ -17,16 +22,37 @@ class Mailgun {
 	 */
 	private $transport;
 
+	/**
+	 *  Injects laravel viewFactory and Transporter of choice
+	 */
 	public function __construct(){
 		$this->viewFactory = app()->make(Factory::class);
 
 		$this->transport = app()->make(TransporterContract::class);
 	}
 
+
+	/**
+	 * Sends emails through injected Transporter
+	 *
+	 * @param string $domain The domain to send email from
+	 * @param mixed $view
+	 * @param mixed $viewData
+	 * @param \Closure $callback Closure to manipulate the Message object
+	 * @return bool
+	 */
 	public function send($domain, $view, $viewData, \Closure $callback){
 		return $this->transport->send($domain, $this->parseView($view, $viewData), $callback);
 	}
 
+	/**
+	 *  Handles which views that need to be parsed
+	 *
+	 * @param mixed $view
+	 * @param mixed $viewData
+	 * @return array
+	 * @throws \Exception
+	 */
 	private function parseView($view, $viewData){
 		$text = '';
 		$html = '';
@@ -51,9 +77,9 @@ class Mailgun {
 	 * Parses the view and returns the contents
 	 *
 	 * @param string $view
-	 * @param array  $viewData
-	 *
+	 * @param array $viewData
 	 * @return string
+	 * @throws \Exception
 	 */
 	private function renderView($view, $viewData)
 	{
