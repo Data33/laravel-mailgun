@@ -17,4 +17,10 @@ interface TransporterContract {
 	 * @return bool
 	 */
 	public function send($domain, $content, \Closure $callback);
+
+	/**
+	 * Returns an array of all mailgun message ids associated with this message
+	 * @return array
+	 */
+	public function getMessageIds();
 }

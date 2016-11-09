@@ -10,9 +10,10 @@ use anlutro\cURL\cURL;
 use Data33\LaravelMailgun\Contracts\TransporterContract;
 use Data33\LaravelMailgun\Message;
 use Data33\LaravelMailgun\Traits\APIKeyTrait;
+use Data33\LaravelMailgun\Traits\MessageIdTrait;
 
 class AnlutroCurlTransporter implements TransporterContract{
-	use APIKeyTrait;
+	use APIKeyTrait, MessageIdTrait;
 
 	/**
 	 * @param string $domain The domain to send from
@@ -45,6 +46,8 @@ class AnlutroCurlTransporter implements TransporterContract{
 
 				if (!$json || !isset($json->message) || $json->message !== "Queued. Thank you.")
 					$allSent = false;
+
+				$this->addMessageId($json->id);
 			}
 			else{
 				$allSent = false;
