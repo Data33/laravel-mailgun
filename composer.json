@@ -22,5 +22,15 @@
         "psr-4": {
             "Data33\\LaravelMailgun\\": "src/"
         }
-    }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Data33\\LaravelMailgun\\Providers\\MailgunServiceProvider"
+            ],
+            "aliases": {
+                "Debugbar": "Data33\\LaravelMailgun\\MailgunFacade"
+            }
+        }
+    },
 }
