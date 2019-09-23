@@ -32,5 +32,5 @@
                 "MailgunFacade": "Data33\\LaravelMailgun\\MailgunFacade"
             }
         }
-    },
+    }
 }
