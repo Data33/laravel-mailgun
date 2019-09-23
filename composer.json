@@ -29,7 +29,7 @@
                 "Data33\\LaravelMailgun\\Providers\\MailgunServiceProvider"
             ],
             "aliases": {
-                "Debugbar": "Data33\\LaravelMailgun\\MailgunFacade"
+                "MailgunFacade": "Data33\\LaravelMailgun\\MailgunFacade"
             }
         }
     },
