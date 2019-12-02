@@ -8,7 +8,7 @@ One of the main advantages is that you can send emails from any domains connecte
 
 Open your `composer.json` file and add the following to the `require` key:
 
-	"data33/laravel-mailgun": "1.0.*"
+	"data33/laravel-mailgun": "^1"
 
 ---
 	
@@ -18,10 +18,6 @@ After adding the key, run composer update from the command line to install the p
 composer update
 ```
 
-Add the service provider to the `providers` array in your `config/app.php` file.
-
-    Data33\LaravelMailgun\Providers\MailgunServiceProvider::class,
-	
 ## Configuration ##
 Before you can start using the package we need to set some configurations.
 To do so you must first publish the config file, you can do this with the following `artisan` command. 
