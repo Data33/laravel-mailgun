@@ -15,6 +15,7 @@ class Message {
 	private $recipientVariables = [];
 	private $from = '';
 	private $subject = '';
+	private $tags = [];
 	private $body = ['text' => '', 'html' => ''];
 
 	/**
@@ -90,6 +91,18 @@ class Message {
 	public function addBccRecipient($email, $variables = ''){
 		$this->setRecipientVariables($email, $variables);
 		$this->bcc[] = $this->parseRecipient($email, $variables);
+
+		return $this;
+	}
+
+	/**
+	 * Adds a tag to the message
+	 *
+	 * @param string $tag The tag to be added to the message
+	 * @return Message
+	 */
+	public function addTag($tag) {
+		$this->tags[] = $tag;
 
 		return $this;
 	}
@@ -203,6 +216,11 @@ class Message {
 
 		foreach($this->attachments as $index => $file){
 			$postFields[sprintf('attachment[%d]', $index)] = curl_file_create($file['path'], '', $file['name']);
+		}
+
+		// Only send the tag field if we have actually supplied any tags
+		if (!empty($this->tags)) {
+			$postFields['o:tag'] = $this->tags;
 		}
 
 
