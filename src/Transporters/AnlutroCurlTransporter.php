@@ -16,13 +16,13 @@ class AnlutroCurlTransporter implements TransporterContract{
 	use APIKeyTrait, MessageIdTrait;
 
 	/**
-	 * @param string $domain The domain to send from
+	 * @param string $mailgunUrl The URL to the Mailgun Messages API for your domain
 	 * @param mixed $content The content to send
 	 * @param \Closure $callback Closure to manipulate the Message object
 	 * @param \Closure $requestCallback Closure to manipulate the Request object
 	 * @return bool
 	 */
-	public function send($domain, $content, \Closure $callback, \Closure $requestCallback = null){
+	public function send($mailgunUrl, $content, \Closure $callback, \Closure $requestCallback = null){
 
 		$curl = new cURL;
 
@@ -37,7 +37,7 @@ class AnlutroCurlTransporter implements TransporterContract{
 		$allSent = true;
 
 		foreach($messages as $postFields){
-			$request = $curl->newRawRequest('post', sprintf('https://api.mailgun.net/v3/%s/messages', $domain), $postFields)
+			$request = $curl->newRawRequest('post', $mailgunUrl, $postFields)
 				->auth('api', $this->apiKey);
 				
 			if ($requestCallback !== null) {
